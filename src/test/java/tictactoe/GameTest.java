@@ -1,29 +1,26 @@
-package testtictactoe;
+package tictactoe;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tictactoe.Game;
-import tictactoe.GameException;
-import tictactoe.Pos;
-
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
     private Game game;
     private boolean stopGame = false;
+    private boolean result;
 
     @BeforeEach
     void setUp() {
-        game = new Game((sender, winner) -> {
+        result = false;
+        game = new Game();
+        game.setGameIsOverHandler((sender, winner) -> {
             stopGame = true;
             System.out.println(sender.getBoard());
             switch (winner) {
                 case Empty:
                     System.out.println("Ничья");
+                    result = true;
                     break;
                 case X:
                     System.out.println("Победил ЧЕЛОВЕК");
@@ -52,6 +49,7 @@ class GameTest {
                 System.err.println(exception.getMessage());
             }
         } while (true);
+        Assertions.assertTrue(result);
     }
 
 

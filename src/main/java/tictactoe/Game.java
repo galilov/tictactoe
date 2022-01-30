@@ -1,21 +1,24 @@
 package tictactoe;
 
 public class Game {
-    private final IBoard board;
-    private final IPlayer playerHuman, playerMachine;
-    private final IGameOverHandler gameIsOverHandler;
-    private IPlayer nextPlayer;
+    private Board board;
+    private Player playerHuman, playerMachine;
+    private GameOverHandler gameIsOverHandler;
+    private Player nextPlayer;
 
-    public Game(IGameOverHandler gameIsOverHandler) {
-        this.gameIsOverHandler = gameIsOverHandler;
+    public Game() {
+        reset();
+    }
+
+    public void reset() {
         board = new Board();
-        IAI ai = new MiniMax();
+        MiniMax ai = new MiniMax();
         playerHuman = new Player(Seed.X, board, ai);
         playerMachine = new Player(Seed.O, board, ai);
         this.nextPlayer = playerHuman;
     }
 
-    public IBoard getBoard() {
+    public Board getBoard() {
         return board;
     }
 
@@ -39,7 +42,11 @@ public class Game {
         return pos;
     }
 
-    private void turnToTheOppositePlayer(IPlayer oppositePlayer) {
+    public void setGameIsOverHandler(GameOverHandler gameIsOverHandler) {
+        this.gameIsOverHandler = gameIsOverHandler;
+    }
+
+    private void turnToTheOppositePlayer(Player oppositePlayer) {
         GameStatus status = board.getGameStatus();
         if (status.isOver()) {
             nextPlayer = null;
@@ -51,10 +58,9 @@ public class Game {
         }
     }
 
-    private void checkPlayer(IPlayer player) {
+    private void checkPlayer(Player player) {
         if (nextPlayer != player) {
-            throw new GameException("Сейчас не ваш ход!");
+            throw new IllegalArgumentException("Сейчас не ваш ход!");
         }
     }
-
 }

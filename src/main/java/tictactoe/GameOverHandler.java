@@ -1,5 +1,5 @@
 package tictactoe;
 
-public interface IGameOverHandler {
+public interface GameOverHandler {
     void handleGameIsOver(Game game, Seed winner);
 }
